@@ -1,6 +1,11 @@
 # IPv4Mutate
 performs various mutations on IPv4 addresses, such as converting to hex, octal, urlencoded, and more
 
+### Installation
+```
+pip install ipv4mutate
+```
+
 ### Usage
 ```
 from ipv4mutate import IPv4Mutate
