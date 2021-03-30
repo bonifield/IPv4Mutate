@@ -9,7 +9,7 @@ pip install ipv4mutate
 ### Usage
 ```
 from ipv4mutate import IPv4Mutate
-i = IPv4Mutate("127.0.5.7)
+i = IPv4Mutate("127.0.5.7")
 ```
 
 ### Available Attributes
@@ -35,4 +35,22 @@ IP: 127.0.5.7
         mutate_zero_padded       127.000.005.007
         mutate_zero_stripped     127.5.7
         mutate_urlencoded        %31%32%37%2e%30%2e%35%2e%37
+```
+
+### Integration with IPv4Helper [GitHub](https://github.com/bonifield/IPv4Helper) [PyPi](https://pypi.org/project/ipv4helper/)
+```
+from ipv4helper import IPv4Helper
+from ipv4mutate import IPv4Mutate
+i = IPv4Helper("127.144.4.9/28")
+for x in i.ip_range_generator():
+	z = IPv4Mutate(x)
+	print(z.mutate_hex)
+
+# snipped output
+# ...
+# 0x7f.0x90.0x4.0x0
+# 0x7f.0x90.0x4.0x1
+# 0x7f.0x90.0x4.0x2
+# 0x7f.0x90.0x4.0x3
+# ...
 ```
