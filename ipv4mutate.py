@@ -25,32 +25,32 @@ class IPv4Mutate:
 		self._mutate_binary = bb
 
 	#============================================================================
-	# each octet as hexadecimal
+	# each octet as dotted-hexadecimal
 	#============================================================================
-	def get_mutate_hex(self):
+	def get_mutate_dotted_hex(self):
 		""" getter for hex output """
-		return(self._mutate_hex)
+		return(self._mutate_dotted_hex)
 
-	def set_mutate_hex(self, z):
+	def set_mutate_dotted_hex(self, z):
 		""" create a hexadecimal representation of the octets """
 		h = [hex(int(x)) for x in z.split(".")]
 		hh = ".".join(h)
-		self._mutate_hex = hh
+		self._mutate_dotted_hex = hh
 
 	#============================================================================
 	# each octet into a single hexadecimal string
 	#============================================================================
-	def get_mutate_hex_combined(self):
+	def get_mutate_hex(self):
 		""" getter for single-string hex output """
-		return(self._mutate_hex_combined)
+		return(self._mutate_hex)
 
-	def set_mutate_hex_combined(self, z):
+	def set_mutate_hex(self, z):
 		""" create a single-string hexadecimal representation of the octets """
 		h = z.split(".")
 		s = ""
 		for i in h:
 			s += str(format(int(i), '02x'))
-		self._mutate_hex_combined = "0x"+s
+		self._mutate_hex = "0x"+s
 
 	#============================================================================
 	# each octet as octal
@@ -95,6 +95,23 @@ class IPv4Mutate:
 		self._mutate_zero_padded = pp
 
 	#============================================================================
+	# IP to decimal
+	#============================================================================
+	def get_mutate_decimal(self):
+		""" getter for decimal output """
+		return(self._mutate_decimal)
+
+	def set_mutate_decimal(self, z):
+		""" convert each octet using powers of 256 then add the sums """
+		ip = [int(x) for x in z.split(".")]
+		i1 = ip[0]*(256**3)
+		i2 = ip[1]*(256**2)
+		i3 = ip[2]*(256**1)
+		i4 = ip[3]*(256**0)
+		ipout = i1+i2+i3+i4
+		self._mutate_decimal = ipout
+
+	#============================================================================
 	# IP stripped of middle zeros if present
 	#============================================================================
 	def get_mutate_zero_stripped(self):
@@ -129,27 +146,29 @@ class IPv4Mutate:
 	#============================================================================
 	def call_setters(self, x):
 		self.set_mutate_binary(x)
+		self.set_mutate_dotted_hex(x)
 		self.set_mutate_hex(x)
-		self.set_mutate_hex_combined(x)
 		self.set_mutate_octal(x)
 		self.set_mutate_octal_padded(x)
 		self.set_mutate_zero_padded(x)
 		self.set_mutate_zero_stripped(x)
 		self.set_mutate_urlencoded(x)
+		self.set_mutate_decimal(x)
 
 	#============================================================================
 	# attributes
 	#============================================================================
 	mutate_binary = property(get_mutate_binary)
+	mutate_dotted_hex = property(get_mutate_dotted_hex)
 	mutate_hex = property(get_mutate_hex)
-	mutate_hex_combined = property(get_mutate_hex_combined)
 	mutate_octal = property(get_mutate_octal)
 	mutate_octal_padded = property(get_mutate_octal_padded)
 	mutate_zero_padded = property(get_mutate_zero_padded)
 	mutate_zero_stripped = property(get_mutate_zero_stripped)
 	mutate_urlencoded = property(get_mutate_urlencoded)
+	mutate_decimal = property(get_mutate_decimal)
 
 	#============================================================================
 	def __repr__(self):
 		""" returns the provided argument during initialization (_iparg) """
-		return("{}".format(self._iparg))
+		return(f"{self._iparg}")
